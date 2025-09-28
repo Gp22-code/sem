@@ -1,1 +1,1 @@
-Hello world App
+![Build (master)](https://img.shields.io/github/actions/workflow/status/GP22-code/sem/main.yml?branch=master)
