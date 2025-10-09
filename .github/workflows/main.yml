@@ -29,7 +29,7 @@ jobs:
         run: docker build -t semimage -f Dockerfile .
 
       - name: Run container
-        run: docker run -d --rm --name semcontainer -p 8080:8080 semimage
+        run: docker run --name semcontainer -d semimage
 
       - name: Show logs
         run: docker logs semcontainer
