@@ -49,7 +49,6 @@ jobs:
       - name: Cleanup
         if: always()
         run: docker compose down
-          distribution: 'adopt'
       - name: Setup network
         run:
             docker network create --driver bridge se-methods
