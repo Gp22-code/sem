@@ -1,0 +1,56 @@
+@startuml
+left to right direction
+
+actor HR_Advisor as "HR Advisor"
+actor Finance as "Finance Officer"
+actor HR_Manager as "HR Manager"
+actor HR_Analyst as "HR Analyst"
+actor HR_Officer as "HR Officer"
+
+rectangle Database
+
+rectangle "HR System" {
+
+  ' --- Use cases ---
+  usecase UC1 as "List employees\nby department"
+  usecase UC2 as "Top N salary\nby department"
+  usecase UC3 as "Average salary\nby role"
+  usecase UC4 as "Get salaries\nby role"
+  usecase UC5 as "Department manager\nreport"
+  usecase UC6 as "Employees hired within\ndate range"
+  usecase UC7 as "Identify employees due\nfor salary review"
+  usecase UC8 as "Search employee\nby name"
+
+  ' Shared include for all “report” UCs
+  usecase UCa as "Export / Print report"
+
+  ' --- Actor associations ---
+  HR_Advisor  - UC1
+  HR_Advisor  - UC4
+  Finance     - UC2
+  HR_Analyst  - UC3
+  HR_Analyst  - UC7
+  HR_Manager  - UC5
+  HR_Officer  - UC6
+  HR_Officer  - UC8
+
+  ' --- Includes (common reporting behaviour) ---
+  UC2 ..> UCa : <<include>>
+  UC3 ..> UCa : <<include>>
+  UC4 ..> UCa : <<include>>
+  UC5 ..> UCa : <<include>>
+  UC6 ..> UCa : <<include>>
+  UC7 ..> UCa : <<include>>
+
+  ' --- Data dependency (consistent with your example) ---
+  UC1 - Database
+  UC2 - Database
+  UC3 - Database
+  UC4 - Database
+  UC5 - Database
+  UC6 - Database
+  UC7 - Database
+  UC8 - Database
+}
+
+@enduml

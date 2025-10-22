@@ -1,41 +1,33 @@
 
 services:
   db:
-    image: my-mysql:latest     # or mysql:8.0 if you don't have a custom image
+    image: mysql:8.0
     container_name: my-mysql
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: employees
-    ports:
-      - "3306:3306"
     volumes:
-      - my-mysql-data:/var/lib/mysql
+      - type: bind
+        source: C:/Users/William/Desktop/seMethods/db/sakila
+        target: /docker-entrypoint-initdb.d
+        read_only: true
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pexample"]
+      test: ["CMD","mysqladmin","ping","-h","127.0.0.1","-pexample"]
       interval: 5s
       timeout: 3s
-      retries: 20
+      retries: 30
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile       # your app’s Dockerfile
+    build: .
     container_name: my-app
     depends_on:
       db:
         condition: service_healthy
     environment:
-      # For a Spring Boot app; tweak for your framework
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/employees?useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: example
-      # Optional: server port if your app uses it
-      # SERVER_PORT: "8080"
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: employees
+      DB_USER: root
+      DB_PASS: example
     ports:
       - "8080:8080"
-    # If your app needs JVM opts, add:
-    # environment:
-    #   JAVA_TOOL_OPTIONS: "-Xms256m -Xmx512m"
-
-volumes:
-  my-mysql-data:
