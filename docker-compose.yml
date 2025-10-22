@@ -1,17 +1,21 @@
 
 services:
   db:
-    image: my-mysql:latest
+    image: mysql:8.0
     container_name: my-mysql
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: employees
-      MYSQL_ROOT_HOST: "%"        # ← allow root from other containers
+    volumes:
+      - type: bind
+        source: C:/Users/William/Desktop/seMethods/db/sakila
+        target: /docker-entrypoint-initdb.d
+        read_only: true
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pexample"]
+      test: ["CMD","mysqladmin","ping","-h","127.0.0.1","-pexample"]
       interval: 5s
       timeout: 3s
-      retries: 20
+      retries: 30
 
   app:
     build: .
