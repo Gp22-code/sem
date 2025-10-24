@@ -12,5 +12,5 @@ RUN ls -l /src/target
 # runtime stage
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=build /src/target/seMethods-0.1.0.2.jar /app/app.jar
+COPY target/seMethods-0.1.0.4-jar-with-dependencies.jar app.jar
 ENTRYPOINT ["java","-jar","/app/app.jar"]
